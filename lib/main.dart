@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:gymoraly/views/login_view.dart';
-import 'controllers/theme_controller.dart'; 
-import 'package:sqflite_common_ffi/sqflite_ffi.dart'; // IMPORTANTE: Importação do SQLite para Desktop
-import 'dart:io'; // IMPORTANTE: Para checar em qual sistema (Windows, etc) o app está rodando
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import 'features/auth/presentation/pages/login_page.dart';
+import 'controllers/theme_controller.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,8 +15,7 @@ void main() {
     databaseFactory = databaseFactoryFfi;
   }
 
-  // 3. Roda o aplicativo
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +52,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           
-          home: const LoginView(), // Sua tela inicial
+          home: const LoginPage(),
         );
       },
     );
