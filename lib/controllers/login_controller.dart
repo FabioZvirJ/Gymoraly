@@ -4,7 +4,7 @@ import 'package:gymoraly/views/main_wrapper.dart';
 import '../models/login_model.dart';
 import '../models/user_model.dart';
 
-import '../services/database_helper.dart' hide User; 
+import '../services/database_helper.dart';
 
 class LoginController extends ChangeNotifier {
   // Você PRECISA dessa linha para que o método login reconheça o "model"
@@ -46,8 +46,6 @@ class LoginController extends ChangeNotifier {
                 MainWrapper(userName: user.name), // CHAME O WRAPPER AQUI
           ),
         );
-
-
       } else {
         // LOGIN FALHOU
         ScaffoldMessenger.of(context).showSnackBar(

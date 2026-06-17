@@ -10,8 +10,12 @@ class PhysicalDataPage extends StatefulWidget {
 }
 
 class _PhysicalDataPageState extends State<PhysicalDataPage> {
-  final TextEditingController _heightController = TextEditingController(text: '175');
-  final TextEditingController _weightController = TextEditingController(text: '70');
+  final TextEditingController _heightController = TextEditingController(
+    text: '175',
+  );
+  final TextEditingController _weightController = TextEditingController(
+    text: '70',
+  );
 
   @override
   void initState() {
@@ -31,11 +35,21 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
     super.dispose();
   }
 
-  Widget _buildSmallInput({required String label, required TextEditingController controller}) {
+  Widget _buildSmallInput({
+    required String label,
+    required TextEditingController controller,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54)),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black54,
+          ),
+        ),
         const SizedBox(height: 8),
         TextField(
           controller: controller,
@@ -43,8 +57,14 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.grey.shade100,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
           ),
         ),
       ],
@@ -60,7 +80,10 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back, color: Colors.black87), onPressed: () => Navigator.pop(context)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -69,19 +92,47 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              const Text('Seus Dados\nAtuais', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: Colors.black87, height: 1.2)),
+              const Text(
+                'Seus Dados\nAtuais',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black87,
+                  height: 1.2,
+                ),
+              ),
               const SizedBox(height: 40),
-              _buildSmallInput(label: 'Altura (cm)', controller: _heightController),
+              _buildSmallInput(
+                label: 'Altura (cm)',
+                controller: _heightController,
+              ),
               const SizedBox(height: 20),
-              _buildSmallInput(label: 'Peso (kg)', controller: _weightController),
+              _buildSmallInput(
+                label: 'Peso (kg)',
+                controller: _weightController,
+              ),
               const SizedBox(height: 80),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade200, foregroundColor: Colors.black87, elevation: 0, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                      child: const Text('Anterior', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey.shade200,
+                        foregroundColor: Colors.black87,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Anterior',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -90,20 +141,55 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
                       onPressed: widget.controller.isLoading
                           ? null
                           : () async {
-                              widget.controller.model.height = double.tryParse(_heightController.text) ?? 0.0;
-                              widget.controller.model.weight = double.tryParse(_weightController.text) ?? 0.0;
+                              widget.controller.model.height =
+                                  double.tryParse(_heightController.text) ??
+                                  0.0;
+                              widget.controller.model.weight =
+                                  double.tryParse(_weightController.text) ??
+                                  0.0;
 
                               final result = await widget.controller.register();
                               if (result > 0 && context.mounted) {
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const _RegistrationSuccessPage()));
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const _RegistrationSuccessPage(),
+                                  ),
+                                );
                               } else if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro ao criar conta.')));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Erro ao criar conta.'),
+                                  ),
+                                );
                               }
                             },
-                      style: ElevatedButton.styleFrom(backgroundColor: primaryColor, foregroundColor: Colors.white, elevation: 0, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
                       child: widget.controller.isLoading
-                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                          : const Text('Cadastrar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              'Cadastrar',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
                 ],
@@ -118,13 +204,26 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
 }
 
 class _RegistrationSuccessPage extends StatelessWidget {
-  const _RegistrationSuccessPage({super.key});
+  const _RegistrationSuccessPage();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Sucesso')),
-      body: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [const Text('Conta criada com sucesso!'), const SizedBox(height: 16), ElevatedButton(onPressed: () => Navigator.popUntil(context, (route) => route.isFirst), child: const Text('Ir para login'))])),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Conta criada com sucesso!'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () =>
+                  Navigator.popUntil(context, (route) => route.isFirst),
+              child: const Text('Ir para login'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

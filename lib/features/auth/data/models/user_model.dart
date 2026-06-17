@@ -2,24 +2,15 @@ import '../../domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
   const UserModel({
-    int? id,
-    required String name,
-    required String email,
-    required String password,
-    int? age,
-    String? gender,
-    double? height,
-    double? weight,
-  }) : super(
-          id: id,
-          name: name,
-          email: email,
-          password: password,
-          age: age,
-          gender: gender,
-          height: height,
-          weight: weight,
-        );
+    super.id,
+    required super.name,
+    required super.email,
+    required super.password,
+    super.age,
+    super.gender,
+    super.height,
+    super.weight,
+  });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     double? parseNullableDouble(dynamic value) {

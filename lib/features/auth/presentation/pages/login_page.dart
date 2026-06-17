@@ -11,7 +11,7 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(authControllerProvider);
 
-    Widget _buildInputGroup({
+    Widget buildInputGroup({
       required String label,
       required String hint,
       required Function(String) onChanged,
@@ -22,7 +22,14 @@ class LoginPage extends ConsumerWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black87)),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
           const SizedBox(height: 8),
           SizedBox(
             height: 56,
@@ -44,7 +51,10 @@ class LoginPage extends ConsumerWidget {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFF2196F3), width: 1.5),
+                  borderSide: const BorderSide(
+                    color: Color(0xFF2196F3),
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
@@ -65,22 +75,36 @@ class LoginPage extends ConsumerWidget {
               children: [
                 const Icon(Icons.fitness_center, size: 50, color: primaryColor),
                 const SizedBox(height: 10),
-                const Text('Gymoraly', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: primaryColor, letterSpacing: -0.5)),
+                const Text(
+                  'Gymoraly',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                    color: primaryColor,
+                    letterSpacing: -0.5,
+                  ),
+                ),
                 const SizedBox(height: 40),
-                _buildInputGroup(
+                buildInputGroup(
                   label: 'E-mail',
                   hint: 'exemplo@email.com',
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) => controller.model.email = value,
                 ),
                 const SizedBox(height: 20),
-                _buildInputGroup(
+                buildInputGroup(
                   label: 'Senha',
                   hint: '••••••••',
                   isPassword: !controller.isPasswordVisible,
                   onChanged: (value) => controller.model.password = value,
                   suffixIcon: IconButton(
-                    icon: Icon(controller.isPasswordVisible ? Icons.visibility_rounded : Icons.visibility_off_rounded, color: Colors.grey, size: 20),
+                    icon: Icon(
+                      controller.isPasswordVisible
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
                     onPressed: controller.togglePasswordVisibility,
                   ),
                 ),
@@ -88,7 +112,13 @@ class LoginPage extends ConsumerWidget {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {},
-                    child: Text('Esqueci minha senha', style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),
+                    child: Text(
+                      'Esqueci minha senha',
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -103,30 +133,74 @@ class LoginPage extends ConsumerWidget {
                             if (user != null && context.mounted) {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => MainWrapperPage(userName: user.name)),
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MainWrapperPage(userName: user.name),
+                                ),
                               );
                             } else {
                               if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('E-mail ou senha incorretos.'), backgroundColor: Colors.redAccent));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'E-mail ou senha incorretos.',
+                                    ),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                );
                               }
                             }
                           },
-                    style: ElevatedButton.styleFrom(backgroundColor: primaryColor, foregroundColor: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                     child: controller.isLoading
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                        : const Text('Entrar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            'Entrar',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 32),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Ainda não tem conta? ', style: TextStyle(color: Colors.grey.shade600)),
+                    Text(
+                      'Ainda não tem conta? ',
+                      style: TextStyle(color: Colors.grey.shade600),
+                    ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
                       },
-                      child: const Text('Crie uma conta', style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Crie uma conta',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
