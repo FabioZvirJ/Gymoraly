@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gymoraly/features/community/pages/forum_topics_page.dart';
+import 'package:gymoraly/features/community/pages/quick_timer_page.dart';
+import 'package:gymoraly/features/community/pages/recommendations_page.dart';
 
 class CommunityView extends StatelessWidget {
   const CommunityView({super.key});
@@ -6,20 +9,21 @@ class CommunityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF2196F3);
-    const darkIconColor = Color(0xFF2D3142); // Cor escura dos ícones da lista
+    const darkIconColor = Color(0xFF2D3142);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // --- HEADER AZUL ---
             Container(
               height: 160,
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: primaryColor,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
               ),
               padding: const EdgeInsets.only(top: 60, left: 25),
               child: const Text(
@@ -31,8 +35,6 @@ class CommunityView extends StatelessWidget {
                 ),
               ),
             ),
-
-            // --- CONTEÚDO PRINCIPAL (CARD BRANCO) ---
             Transform.translate(
               offset: const Offset(0, -30),
               child: Padding(
@@ -44,16 +46,15 @@ class CommunityView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
-                      )
+                      ),
                     ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Barra de Busca
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         decoration: BoxDecoration(
@@ -65,13 +66,14 @@ class CommunityView extends StatelessWidget {
                             icon: Icon(Icons.search, color: Colors.grey),
                             hintText: 'Encontre tópicos',
                             border: InputBorder.none,
-                            hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 25),
-
-                      // Seção Formim (Tópicos)
                       _buildSectionHeader('Fóruns Ativos', Icons.menu),
                       const SizedBox(height: 15),
                       _buildTopicItem(
@@ -79,44 +81,85 @@ class CommunityView extends StatelessWidget {
                         '1 novo tópico',
                         Icons.swap_vert_rounded,
                         darkIconColor,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForumTopicsPage(
+                              forumTitle: 'Ideias de Treino',
+                            ),
+                          ),
+                        ),
                       ),
                       _buildTopicItem(
                         'Dicas de Nutrição',
                         '5 novos tópicos',
                         Icons.g_mobiledata_rounded,
                         darkIconColor,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForumTopicsPage(
+                              forumTitle: 'Dicas de Nutrição',
+                            ),
+                          ),
+                        ),
                       ),
                       _buildTopicItem(
                         'Treino Coletivo',
                         '2 novos tópicos',
                         Icons.chat_bubble_outline_rounded,
                         darkIconColor,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForumTopicsPage(
+                              forumTitle: 'Treino Coletivo',
+                            ),
+                          ),
+                        ),
                       ),
-
                       const Divider(height: 40),
-
-                      // Seção Timer Rápido
-                      _buildSectionHeader('Cronômetro Rápido', Icons.more_horiz),
+                      _buildSectionHeader(
+                        'Cronômetro Rápido',
+                        Icons.more_horiz,
+                      ),
                       const SizedBox(height: 15),
-                      _buildUserRow('Glynto Silva'),
-                      
+                      _buildUserRow(
+                        'Glynto Silva',
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const QuickTimerPage(),
+                          ),
+                        ),
+                      ),
                       const Divider(height: 40),
-
-                      // Seção Recomendar
                       const Text(
                         'Minhas Recomendações',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      Container(
-                        height: 60,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade200),
-                          borderRadius: BorderRadius.circular(15),
+                      InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const RecommendationsPage(),
+                          ),
                         ),
-                        child: const Center(
-                          child: Icon(Icons.add, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                          height: 60,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade200),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Center(
+                            child: Icon(Icons.add, color: Colors.grey),
+                          ),
                         ),
                       ),
                     ],
@@ -129,8 +172,6 @@ class CommunityView extends StatelessWidget {
       ),
     );
   }
-
-  // --- WIDGETS AUXILIARES ---
 
   Widget _buildSectionHeader(String title, IconData icon) {
     return Row(
@@ -145,56 +186,83 @@ class CommunityView extends StatelessWidget {
     );
   }
 
-  Widget _buildTopicItem(String title, String subtitle, IconData icon, Color circleColor) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Row(
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: circleColor,
-              shape: BoxShape.circle,
+  Widget _buildTopicItem(
+    String title,
+    String subtitle,
+    IconData icon,
+    Color circleColor,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: circleColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: Colors.white, size: 24),
             ),
-            child: Icon(icon, color: Colors.white, size: 24),
-          ),
-          const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ],
               ),
-              Text(
-                subtitle,
-                style: const TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-            ],
-          ),
-          const Spacer(),
-          const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 14),
-        ],
+            ),
+            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 14),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildUserRow(String name) {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundColor: Colors.blue.shade50,
-          child: const Icon(Icons.person, color: Colors.blue),
+  Widget _buildUserRow(String name, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.blue.shade50,
+              child: const Icon(Icons.timer_outlined, color: Colors.blue),
+            ),
+            const SizedBox(width: 15),
+            const Expanded(
+              child: Text(
+                '01:30 de descanso',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+            Text(
+              name,
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+            const SizedBox(width: 8),
+            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 14),
+          ],
         ),
-        const SizedBox(width: 15),
-        Text(
-          name,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
-        const Spacer(),
-        const Icon(Icons.more_horiz, color: Colors.grey),
-      ],
+      ),
     );
   }
 }

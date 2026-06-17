@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gymoraly/features/progress/pages/progress_report_page.dart';
+import 'package:gymoraly/features/progress/pages/progress_suggestion_detail_page.dart';
 
 class ProgressView extends StatelessWidget {
   const ProgressView({super.key});
@@ -18,7 +20,9 @@ class ProgressView extends StatelessWidget {
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: primaryColor,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
               ),
               padding: const EdgeInsets.only(top: 60, left: 25),
               child: const Text(
@@ -43,10 +47,10 @@ class ProgressView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
-                      )
+                      ),
                     ],
                   ),
                   child: Column(
@@ -54,36 +58,60 @@ class ProgressView extends StatelessWidget {
                     children: [
                       const Text(
                         'Sessão de treino',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      
+
                       // Placeholder do Gráfico de Linha (Simulado)
                       SizedBox(
                         height: 120,
                         width: double.infinity,
                         child: CustomPaint(painter: LineChartPainter()),
                       ),
-                      
+
                       const SizedBox(height: 10),
                       // Dias da semana
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Seg', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                          Text('Ter', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                          Text('Qua', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                          Text('Qui', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                          Text('Sáb', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                          Text('Dom', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                          Text(
+                            'Seg',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                          Text(
+                            'Ter',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                          Text(
+                            'Qua',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                          Text(
+                            'Qui',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                          Text(
+                            'Sáb',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                          Text(
+                            'Dom',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
                         ],
                       ),
-                      
+
                       const Divider(height: 40),
 
                       const Text(
                         'Evolução semanal',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -92,9 +120,14 @@ class ProgressView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          _buildBar(40), _buildBar(70), _buildBar(50), 
-                          _buildBar(90, isSelected: true), _buildBar(30), 
-                          _buildBar(60), _buildBar(45), _buildBar(80),
+                          _buildBar(40),
+                          _buildBar(70),
+                          _buildBar(50),
+                          _buildBar(90, isSelected: true),
+                          _buildBar(30),
+                          _buildBar(60),
+                          _buildBar(45),
+                          _buildBar(80),
                         ],
                       ),
 
@@ -102,25 +135,46 @@ class ProgressView extends StatelessWidget {
 
                       const Text(
                         'Sugestões de evolução',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 20),
 
                       // Lista de Recomendações
                       _buildRecommendationItem(
-                        Icons.trending_up, 
-                        'Aumente 5% no supino', 
-                        'Banco inclinado', 
-                        Colors.blue.shade50, 
-                        primaryColor
+                        Icons.trending_up,
+                        'Aumente 5% no supino',
+                        'Banco inclinado',
+                        Colors.blue.shade50,
+                        primaryColor,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const ProgressSuggestionDetailPage(
+                                  title: 'Aumente 5% no supino',
+                                ),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 15),
                       _buildRecommendationItem(
-                        Icons.timer_outlined, 
-                        'Reduzir descanso para 1:20 min', 
-                        'Todos os exercícios', 
-                        Colors.blue.shade50, 
-                        primaryColor
+                        Icons.timer_outlined,
+                        'Reduzir descanso para 1:20 min',
+                        'Todos os exercícios',
+                        Colors.blue.shade50,
+                        primaryColor,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const ProgressSuggestionDetailPage(
+                                  title: 'Reduzir descanso para 1:20 min',
+                                ),
+                          ),
+                        ),
                       ),
 
                       const SizedBox(height: 30),
@@ -130,18 +184,31 @@ class ProgressView extends StatelessWidget {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ProgressReportPage(),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             elevation: 0,
                           ),
                           child: const Text(
                             'Ver relatório completo',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -166,23 +233,49 @@ class ProgressView extends StatelessWidget {
   }
 
   // Widget para os itens de sugestão
-  Widget _buildRecommendationItem(IconData icon, String title, String subtitle, Color bgColor, Color iconColor) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12)),
-          child: Icon(icon, color: iconColor, size: 20),
-        ),
-        const SizedBox(width: 15),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-            Text(subtitle, style: const TextStyle(color: Colors.grey, fontSize: 12)),
-          ],
-        )
-      ],
+  Widget _buildRecommendationItem(
+    IconData icon,
+    String title,
+    String subtitle,
+    Color bgColor,
+    Color iconColor,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: iconColor, size: 20),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 14),
+        ],
+      ),
     );
   }
 }
@@ -204,15 +297,25 @@ class LineChartPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          const Color(0xFF2196F3).withOpacity(0.3),
-          const Color(0xFF2196F3).withOpacity(0.0),
+          const Color(0xFF2196F3).withValues(alpha: 0.3),
+          const Color(0xFF2196F3).withValues(alpha: 0.0),
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
 
     final path = Path();
     path.moveTo(0, size.height * 0.7);
-    path.quadraticBezierTo(size.width * 0.2, size.height * 0.2, size.width * 0.4, size.height * 0.5);
-    path.quadraticBezierTo(size.width * 0.6, size.height * 0.9, size.width * 0.8, size.height * 0.6);
+    path.quadraticBezierTo(
+      size.width * 0.2,
+      size.height * 0.2,
+      size.width * 0.4,
+      size.height * 0.5,
+    );
+    path.quadraticBezierTo(
+      size.width * 0.6,
+      size.height * 0.9,
+      size.width * 0.8,
+      size.height * 0.6,
+    );
     path.lineTo(size.width, size.height * 0.65);
 
     // Desenha o preenchimento primeiro
