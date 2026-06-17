@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http; 
+import 'package:http/http.dart' as http;
 
 class AddWorkoutView extends StatefulWidget {
   const AddWorkoutView({super.key});
@@ -10,8 +10,8 @@ class AddWorkoutView extends StatefulWidget {
 }
 
 class _AddWorkoutViewState extends State<AddWorkoutView> {
-  List<dynamic> _allExercises = []; 
-  List<dynamic> _filteredExercises = []; 
+  List<dynamic> _allExercises = [];
+  List<dynamic> _filteredExercises = [];
   bool _isLoading = true;
   bool _hasError = false;
   final TextEditingController _searchController = TextEditingController();
@@ -19,7 +19,7 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
   @override
   void initState() {
     super.initState();
-    _fetchExercisesFromApi(); 
+    _fetchExercisesFromApi();
   }
 
   Future<void> _fetchExercisesFromApi() async {
@@ -29,20 +29,22 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
     });
 
     try {
-      final url = Uri.parse('https://exercisedb.dev/api/v1/exercises?limit=100');
-      
+      final url = Uri.parse(
+        'https://exercisedb.dev/api/v1/exercises?limit=100',
+      );
+
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
-        
+
         if (jsonResponse['success'] == true) {
           final List<dynamic> data = jsonResponse['data'];
-          
+
           setState(() {
-            data.shuffle(); 
-            _allExercises = data; 
-            _filteredExercises = _allExercises; 
+            data.shuffle();
+            _allExercises = data;
+            _filteredExercises = _allExercises;
             _isLoading = false;
           });
         } else {
@@ -59,7 +61,7 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
         _hasError = true;
         _isLoading = false;
       });
-      print("Erro ao buscar na API: $e");
+      debugPrint("Erro ao buscar na API: $e");
     }
   }
 
@@ -72,11 +74,14 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
       setState(() {
         _filteredExercises = _allExercises.where((exercise) {
           final name = (exercise['name'] ?? '').toString().toLowerCase();
-          
+
           final bodyPartsList = exercise['bodyParts'] as List<dynamic>? ?? [];
-          final bodyPart = bodyPartsList.isNotEmpty ? bodyPartsList.first.toString().toLowerCase() : '';
-          
-          return name.contains(query.toLowerCase()) || bodyPart.contains(query.toLowerCase());
+          final bodyPart = bodyPartsList.isNotEmpty
+              ? bodyPartsList.first.toString().toLowerCase()
+              : '';
+
+          return name.contains(query.toLowerCase()) ||
+              bodyPart.contains(query.toLowerCase());
         }).toList();
       });
     }
@@ -84,17 +89,28 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
 
   String _traduzirGrupo(String bodyPartIngles) {
     switch (bodyPartIngles.toLowerCase()) {
-      case 'back': return 'Costas';
-      case 'cardio': return 'Cardio';
-      case 'chest': return 'Peito';
-      case 'lower arms': return 'Antebraços';
-      case 'lower legs': return 'Panturrilhas';
-      case 'neck': return 'Pescoço';
-      case 'shoulders': return 'Ombros';
-      case 'upper arms': return 'Braços';
-      case 'upper legs': return 'Pernas';
-      case 'waist': return 'Abdômen';
-      default: return bodyPartIngles;
+      case 'back':
+        return 'Costas';
+      case 'cardio':
+        return 'Cardio';
+      case 'chest':
+        return 'Peito';
+      case 'lower arms':
+        return 'Antebraços';
+      case 'lower legs':
+        return 'Panturrilhas';
+      case 'neck':
+        return 'Pescoço';
+      case 'shoulders':
+        return 'Ombros';
+      case 'upper arms':
+        return 'Braços';
+      case 'upper legs':
+        return 'Pernas';
+      case 'waist':
+        return 'Abdômen';
+      default:
+        return bodyPartIngles;
     }
   }
 
@@ -121,7 +137,10 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
                   Expanded(
                     child: Text(
                       nome,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -134,14 +153,16 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
               ),
             ),
             const Divider(), // Linha divisória
-            
             // O GIF Gigante!
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(20),
+              ),
               child: Image.network(
                 gifUrl,
                 width: double.infinity,
-                fit: BoxFit.contain, // Ajusta o GIF para caber certinho sem cortar
+                fit: BoxFit
+                    .contain, // Ajusta o GIF para caber certinho sem cortar
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   // Mostra bolinha de carregamento enquanto o GIF grande baixa
@@ -192,7 +213,10 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
                 onChanged: _filterExercises,
                 decoration: InputDecoration(
                   hintText: 'Buscar exercícios (ex: press, squat, pernas)',
-                  hintStyle: TextStyle(color: Colors.grey.shade500, fontSize: 15),
+                  hintStyle: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontSize: 15,
+                  ),
                   prefixIcon: Icon(Icons.search, color: Colors.grey.shade500),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 15),
@@ -203,37 +227,52 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
 
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: primaryColor))
+                ? const Center(
+                    child: CircularProgressIndicator(color: primaryColor),
+                  )
                 : _hasError
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.wifi_off, size: 50, color: Colors.grey),
-                            const SizedBox(height: 10),
-                            const Text('Erro ao conectar na API.', style: TextStyle(color: Colors.grey)),
-                            TextButton(
-                              onPressed: _fetchExercisesFromApi,
-                              child: const Text('Tentar novamente'),
-                            )
-                          ],
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.wifi_off,
+                          size: 50,
+                          color: Colors.grey,
                         ),
-                      )
-                    : _filteredExercises.isEmpty
-                        ? Center(
-                            child: Text(
-                              'Nenhum exercício encontrado 😕',
-                              style: TextStyle(color: Colors.grey.shade500, fontSize: 16),
-                            ),
-                          )
-                        : ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            itemCount: _filteredExercises.length,
-                            itemBuilder: (context, index) {
-                              final exercise = _filteredExercises[index];
-                              return _buildExerciseCard(exercise, primaryColor);
-                            },
-                          ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Erro ao conectar na API.',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        TextButton(
+                          onPressed: _fetchExercisesFromApi,
+                          child: const Text('Tentar novamente'),
+                        ),
+                      ],
+                    ),
+                  )
+                : _filteredExercises.isEmpty
+                ? Center(
+                    child: Text(
+                      'Nenhum exercício encontrado 😕',
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    itemCount: _filteredExercises.length,
+                    itemBuilder: (context, index) {
+                      final exercise = _filteredExercises[index];
+                      return _buildExerciseCard(exercise, primaryColor);
+                    },
+                  ),
           ),
         ],
       ),
@@ -242,9 +281,11 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
 
   Widget _buildExerciseCard(dynamic exercise, Color primaryColor) {
     String nomeCru = exercise['name'] ?? '';
-    String nomeExercicio = nomeCru.isNotEmpty ? nomeCru[0].toUpperCase() + nomeCru.substring(1) : 'Exercício sem nome';
+    String nomeExercicio = nomeCru.isNotEmpty
+        ? nomeCru[0].toUpperCase() + nomeCru.substring(1)
+        : 'Exercício sem nome';
     String gifUrl = exercise['gifUrl'] ?? '';
-    
+
     List<dynamic> bodyPartsList = exercise['bodyParts'] ?? [];
     String nomeCategoria = 'Geral';
     if (bodyPartsList.isNotEmpty) {
@@ -263,7 +304,8 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
         children: [
           // AQUI: ADICIONAMOS O CLIQUE NA IMAGEM!
           MouseRegion(
-            cursor: SystemMouseCursors.click, // Aparece a mãozinha no Windows/Web
+            cursor:
+                SystemMouseCursors.click, // Aparece a mãozinha no Windows/Web
             child: GestureDetector(
               onTap: () {
                 // Chama a função que abre o Pop-up
@@ -275,49 +317,53 @@ class _AddWorkoutViewState extends State<AddWorkoutView> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.grey.shade100)
+                  border: Border.all(color: Colors.grey.shade100),
                 ),
                 clipBehavior: Clip.antiAlias,
-                child: gifUrl.isNotEmpty 
+                child: gifUrl.isNotEmpty
                     ? Image.network(
-                        gifUrl, 
+                        gifUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Icon(Icons.fitness_center, color: primaryColor),
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(Icons.fitness_center, color: primaryColor),
                       )
                     : Icon(Icons.fitness_center, color: primaryColor),
               ),
             ),
           ),
           const SizedBox(width: 15),
-          
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   nomeExercicio,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  nomeCategoria, 
+                  nomeCategoria,
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                 ),
               ],
             ),
           ),
-          
+
           IconButton(
             icon: const Icon(Icons.add_circle_outline, size: 28),
             color: primaryColor,
             onPressed: () {
               Map<String, String> exercicioEscolhido = {
                 'nome': nomeExercicio,
-                'grupo': nomeCategoria 
+                'grupo': nomeCategoria,
               };
-              
+
               Navigator.pop(context, exercicioEscolhido);
             },
           ),

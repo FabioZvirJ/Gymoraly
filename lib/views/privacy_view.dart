@@ -52,7 +52,7 @@ class _PrivacyViewState extends State<PrivacyView> {
                       ],
                     ),
                     child: SwitchListTile(
-                      activeColor: primaryColor,
+                      activeThumbColor: primaryColor,
                       title: const Text(
                         "Perfil Público",
                         style: TextStyle(fontWeight: FontWeight.bold),

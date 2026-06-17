@@ -43,21 +43,6 @@ class WorkoutSplitsView extends StatelessWidget {
     );
   }
 
-  // Estilo do título da categoria
-  Widget _buildCategoryHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF2196F3),
-        ),
-      ),
-    );
-  }
-
   // Dicionário de explicações
   String _obterExplicacaoTreino(String title) {
     switch (title) {

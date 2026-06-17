@@ -14,8 +14,6 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF2196F3);
-
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       body: Column(
@@ -62,7 +60,7 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
         ],
       ),
       child: SwitchListTile(
-        activeColor: const Color(0xFF2196F3),
+        activeThumbColor: const Color(0xFF2196F3),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         value: value,
         onChanged: onChanged,
