@@ -19,6 +19,8 @@ class UserRepositoryImpl implements UserRepository {
       gender: user.gender,
       height: user.height,
       weight: user.weight,
+      trainingDaysPerWeek: user.trainingDaysPerWeek,
+      trainingGoal: user.trainingGoal,
     );
     return localDataSource.registerUser(userModel);
   }

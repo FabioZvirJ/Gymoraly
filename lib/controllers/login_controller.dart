@@ -42,8 +42,11 @@ class LoginController extends ChangeNotifier {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                MainWrapper(userName: user.name), // CHAME O WRAPPER AQUI
+            builder: (context) => MainWrapper(
+              userName: user.name,
+              trainingGoal: user.trainingGoal,
+              trainingDaysPerWeek: user.trainingDaysPerWeek,
+            ), // CHAME O WRAPPER AQUI
           ),
         );
       } else {

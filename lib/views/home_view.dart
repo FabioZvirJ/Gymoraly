@@ -3,25 +3,46 @@ import 'package:flutter/gestures.dart';
 import 'package:gymoraly/features/community/pages/community_highlights_page.dart';
 import 'package:gymoraly/features/workouts/pages/all_workouts_page.dart';
 import 'package:gymoraly/features/workouts/pages/create_workout_page.dart';
+import 'package:gymoraly/features/workouts/pages/workout_detail_page.dart';
 import 'package:gymoraly/features/workouts/pages/workout_session_page.dart';
+import 'package:gymoraly/shared/mock/mock_data.dart';
+import 'package:gymoraly/shared/models/workout_model.dart';
 import 'package:gymoraly/views/profile_view.dart';
 
 // 1. Transformamos em StatefulWidget para ter "memória" e guardar os treinos!
 class HomeView extends StatefulWidget {
   final String userName;
-  const HomeView({super.key, required this.userName});
+  final String? trainingGoal;
+  final int? trainingDaysPerWeek;
+
+  const HomeView({
+    super.key,
+    required this.userName,
+    this.trainingGoal,
+    this.trainingDaysPerWeek,
+  });
 
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
-  // 2. Lista dinâmica que começa vazia!
-  List<Map<String, String>> meusTreinos = [];
+  late final List<WorkoutModel> suggestedWorkouts;
+
+  @override
+  void initState() {
+    super.initState();
+    suggestedWorkouts = MockData.recommendedWorkouts(
+      goal: widget.trainingGoal,
+      daysPerWeek: widget.trainingDaysPerWeek,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF2196F3);
+    final trainingGoal = widget.trainingGoal ?? 'Hipertrofia';
+    final trainingDays = widget.trainingDaysPerWeek ?? 3;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
@@ -116,16 +137,19 @@ class _HomeViewState extends State<HomeView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Objetivo',
-                          style: TextStyle(
+                        Text(
+                          'Objetivo: $trainingGoal',
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Text(
-                          '45 min de treino',
-                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                        Text(
+                          '$trainingDays dias por semana',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                          ),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -211,7 +235,10 @@ class _HomeViewState extends State<HomeView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AllWorkoutsPage(),
+                    builder: (context) => AllWorkoutsPage(
+                      trainingGoal: widget.trainingGoal,
+                      trainingDaysPerWeek: widget.trainingDaysPerWeek,
+                    ),
                   ),
                 );
               },
@@ -231,13 +258,8 @@ class _HomeViewState extends State<HomeView> {
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.only(left: 25, right: 10),
                   children: [
-                    // 3. Mapeia a lista real do usuário para gerar os cards dinamicamente
-                    ...meusTreinos.map(
-                      (treino) => _buildWorkoutCard(
-                        treino['nome']!,
-                        treino['grupo']!,
-                        primaryColor,
-                      ),
+                    ...suggestedWorkouts.map(
+                      (workout) => _buildWorkoutCard(workout, primaryColor),
                     ),
 
                     // Botão de adicionar fica sempre no final da lista, passando o 'context' agora
@@ -313,35 +335,59 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _buildWorkoutCard(String title, String subtitle, Color color) {
-    return Container(
-      width: 130,
-      margin: const EdgeInsets.only(right: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.bolt_rounded, color: color, size: 28),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+  Widget _buildWorkoutCard(WorkoutModel workout, Color color) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WorkoutDetailPage(workout: workout),
+          ),
+        );
+      },
+      child: Container(
+        width: 150,
+        margin: const EdgeInsets.only(right: 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.bolt_rounded, color: color, size: 28),
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                workout.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          Text(
-            subtitle,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
-          ),
-        ],
+            const SizedBox(height: 3),
+            Text(
+              '${workout.durationMinutes} min • ${workout.exercises.length} exercícios',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey.shade500, fontSize: 11),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              '4x12 • 3 min',
+              style: TextStyle(
+                color: color,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -349,19 +395,11 @@ class _HomeViewState extends State<HomeView> {
   // Recebe o BuildContext para conseguir navegar e consertar o erro!
   Widget _buildAddWorkoutCard(BuildContext context, Color color) {
     return GestureDetector(
-      onTap: () async {
-        // AGORA ELE ABRE A NOVA PÁGINA DE DIVISÕES!
-        final novoTreino = await Navigator.push(
+      onTap: () {
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CreateWorkoutPage()),
         );
-
-        // Quando todo o processo acabar, adiciona na lista da Home
-        if (novoTreino != null) {
-          setState(() {
-            meusTreinos.add(novoTreino);
-          });
-        }
       },
       child: Container(
         width: 130,

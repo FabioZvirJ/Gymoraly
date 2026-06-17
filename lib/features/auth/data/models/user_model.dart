@@ -10,6 +10,8 @@ class UserModel extends UserEntity {
     super.gender,
     super.height,
     super.weight,
+    super.trainingDaysPerWeek,
+    super.trainingGoal,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -29,6 +31,8 @@ class UserModel extends UserEntity {
       gender: map['gender'] as String?,
       height: parseNullableDouble(map['height']),
       weight: parseNullableDouble(map['weight']),
+      trainingDaysPerWeek: map['training_days_per_week'] as int?,
+      trainingGoal: map['training_goal'] as String?,
     );
   }
 
@@ -42,6 +46,8 @@ class UserModel extends UserEntity {
       'gender': gender,
       'height': height,
       'weight': weight,
+      'training_days_per_week': trainingDaysPerWeek,
+      'training_goal': trainingGoal,
     };
   }
 }

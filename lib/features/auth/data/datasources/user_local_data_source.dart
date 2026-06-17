@@ -20,7 +20,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     final path = join(await getDatabasesPath(), 'gymoraly.db');
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE users(
@@ -31,7 +31,9 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
             age INTEGER,
             gender TEXT,
             height REAL,
-            weight REAL
+            weight REAL,
+            training_days_per_week INTEGER,
+            training_goal TEXT
           )
         ''');
       },
@@ -47,9 +49,16 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
               age INTEGER,
               gender TEXT,
               height REAL,
-              weight REAL
+              weight REAL,
+              training_days_per_week INTEGER,
+              training_goal TEXT
             )
           ''');
+        } else if (oldVersion < 3) {
+          await db.execute(
+            'ALTER TABLE users ADD COLUMN training_days_per_week INTEGER',
+          );
+          await db.execute('ALTER TABLE users ADD COLUMN training_goal TEXT');
         }
       },
     );

@@ -134,8 +134,12 @@ class LoginPage extends ConsumerWidget {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      MainWrapperPage(userName: user.name),
+                                  builder: (context) => MainWrapperPage(
+                                    userName: user.name,
+                                    trainingGoal: user.trainingGoal,
+                                    trainingDaysPerWeek:
+                                        user.trainingDaysPerWeek,
+                                  ),
                                 ),
                               );
                             } else {

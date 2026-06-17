@@ -8,10 +8,7 @@ class AuthController extends ChangeNotifier {
   final LoginUseCase loginUseCase;
   final RegisterUseCase registerUseCase;
 
-  AuthController({
-    required this.loginUseCase,
-    required this.registerUseCase,
-  });
+  AuthController({required this.loginUseCase, required this.registerUseCase});
 
   final AuthFormModel model = AuthFormModel();
 
@@ -50,6 +47,8 @@ class AuthController extends ChangeNotifier {
       gender: model.gender,
       height: model.height,
       weight: model.weight,
+      trainingDaysPerWeek: model.trainingDaysPerWeek,
+      trainingGoal: model.trainingGoal,
     );
 
     try {

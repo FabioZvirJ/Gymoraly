@@ -9,10 +9,25 @@ import 'package:gymoraly/shared/widgets/app_header.dart';
 import 'package:gymoraly/shared/widgets/app_search_field.dart';
 
 class AllWorkoutsPage extends StatelessWidget {
-  const AllWorkoutsPage({super.key});
+  const AllWorkoutsPage({
+    super.key,
+    this.trainingGoal,
+    this.trainingDaysPerWeek,
+  });
+
+  final String? trainingGoal;
+  final int? trainingDaysPerWeek;
 
   @override
   Widget build(BuildContext context) {
+    final workouts = [
+      ...MockData.recommendedWorkouts(
+        goal: trainingGoal,
+        daysPerWeek: trainingDaysPerWeek,
+      ),
+      ...MockData.workouts,
+    ];
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F8),
       body: Column(
@@ -57,9 +72,7 @@ class AllWorkoutsPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 18),
-                ...MockData.workouts.map(
-                  (workout) => _WorkoutCard(workout: workout),
-                ),
+                ...workouts.map((workout) => _WorkoutCard(workout: workout)),
               ],
             ),
           ),

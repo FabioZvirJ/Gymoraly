@@ -8,7 +8,15 @@ import 'progress_view.dart';
 
 class MainWrapper extends StatefulWidget {
   final String userName;
-  const MainWrapper({super.key, required this.userName});
+  final String? trainingGoal;
+  final int? trainingDaysPerWeek;
+
+  const MainWrapper({
+    super.key,
+    required this.userName,
+    this.trainingGoal,
+    this.trainingDaysPerWeek,
+  });
 
   @override
   State<MainWrapper> createState() => _MainWrapperState();
@@ -21,7 +29,11 @@ class _MainWrapperState extends State<MainWrapper> {
   Widget build(BuildContext context) {
     // 1. Adicionamos a ProfissionaisView no final da lista
     final List<Widget> pages = [
-      HomeView(userName: widget.userName), // Índice 0
+      HomeView(
+        userName: widget.userName,
+        trainingGoal: widget.trainingGoal,
+        trainingDaysPerWeek: widget.trainingDaysPerWeek,
+      ), // Índice 0
       const ProgressView(), // Índice 1
       const CommunityView(), // Índice 2
       const NutritionView(), // Índice 4

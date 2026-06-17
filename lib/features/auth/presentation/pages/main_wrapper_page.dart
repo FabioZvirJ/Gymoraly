@@ -7,7 +7,15 @@ import 'package:gymoraly/views/profissionais_view.dart';
 
 class MainWrapperPage extends StatefulWidget {
   final String userName;
-  const MainWrapperPage({super.key, required this.userName});
+  final String? trainingGoal;
+  final int? trainingDaysPerWeek;
+
+  const MainWrapperPage({
+    super.key,
+    required this.userName,
+    this.trainingGoal,
+    this.trainingDaysPerWeek,
+  });
 
   @override
   State<MainWrapperPage> createState() => _MainWrapperPageState();
@@ -19,7 +27,11 @@ class _MainWrapperPageState extends State<MainWrapperPage> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      HomeView(userName: widget.userName),
+      HomeView(
+        userName: widget.userName,
+        trainingGoal: widget.trainingGoal,
+        trainingDaysPerWeek: widget.trainingDaysPerWeek,
+      ),
       const ProgressView(),
       const CommunityView(),
       const NutritionView(),
@@ -38,9 +50,18 @@ class _MainWrapperPageState extends State<MainWrapperPage> {
         unselectedFontSize: 10,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'Treinos'),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Progresso'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Comunidade'),
-          BottomNavigationBarItem(icon: Icon(Icons.restaurant_menu), label: 'Nutrição'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart),
+            label: 'Progresso',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Comunidade',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant_menu),
+            label: 'Nutrição',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.badge), label: 'Pro'),
         ],
       ),

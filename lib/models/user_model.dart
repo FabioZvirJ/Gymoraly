@@ -3,20 +3,24 @@ class User {
   final String name;
   final String email;
   final String password;
-  final int? age;         // Opcional no cadastro
-  final String? gender;   // Opcional no cadastro
-  final double? height;   // Opcional no cadastro
-  final double? weight;   // Opcional no cadastro
+  final int? age; // Opcional no cadastro
+  final String? gender; // Opcional no cadastro
+  final double? height; // Opcional no cadastro
+  final double? weight; // Opcional no cadastro
+  final int? trainingDaysPerWeek;
+  final String? trainingGoal;
 
   User({
-    this.id, 
-    required this.name, 
-    required this.email, 
+    this.id,
+    required this.name,
+    required this.email,
     required this.password,
     this.age,
     this.gender,
     this.height,
     this.weight,
+    this.trainingDaysPerWeek,
+    this.trainingGoal,
   });
 
   // Converte um User para Map (para salvar no banco)
@@ -30,6 +34,8 @@ class User {
       'gender': gender,
       'height': height,
       'weight': weight,
+      'training_days_per_week': trainingDaysPerWeek,
+      'training_goal': trainingGoal,
     };
   }
 
@@ -44,6 +50,8 @@ class User {
       gender: map['gender'],
       height: map['height'],
       weight: map['weight'],
+      trainingDaysPerWeek: map['training_days_per_week'],
+      trainingGoal: map['training_goal'],
     );
   }
 }

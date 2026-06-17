@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 // ADD THIS IMPORT: Point it to where your actual user_model.dart is located
-import 'package:gymoraly/models/user_model.dart'; 
+import 'package:gymoraly/models/user_model.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -21,10 +21,9 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'gymoraly.db');
     return await openDatabase(
       path,
-      version: 2, 
+      version: 3,
       onCreate: (db, version) {
-        return db.execute(
-          '''
+        return db.execute('''
           CREATE TABLE users(
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             name TEXT, 
@@ -33,16 +32,16 @@ class DatabaseHelper {
             age INTEGER,
             gender TEXT,
             height REAL,
-            weight REAL
+            weight REAL,
+            training_days_per_week INTEGER,
+            training_goal TEXT
           )
-          ''',
-        );
+          ''');
       },
-      onUpgrade: (db, oldVersion, newVersion) {
+      onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
-          db.execute('DROP TABLE IF EXISTS users');
-          db.execute(
-            '''
+          await db.execute('DROP TABLE IF EXISTS users');
+          await db.execute('''
             CREATE TABLE users(
               id INTEGER PRIMARY KEY AUTOINCREMENT, 
               name TEXT, 
@@ -51,10 +50,16 @@ class DatabaseHelper {
               age INTEGER,
               gender TEXT,
               height REAL,
-              weight REAL
+              weight REAL,
+              training_days_per_week INTEGER,
+              training_goal TEXT
             )
-            ''',
+            ''');
+        } else if (oldVersion < 3) {
+          await db.execute(
+            'ALTER TABLE users ADD COLUMN training_days_per_week INTEGER',
           );
+          await db.execute('ALTER TABLE users ADD COLUMN training_goal TEXT');
         }
       },
     );

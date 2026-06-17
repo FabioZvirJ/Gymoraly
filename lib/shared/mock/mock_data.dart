@@ -5,6 +5,138 @@ import '../models/professional_model.dart';
 import '../models/workout_model.dart';
 
 class MockData {
+  static List<WorkoutModel> recommendedWorkouts({
+    required String? goal,
+    required int? daysPerWeek,
+  }) {
+    final normalizedGoal = (goal == null || goal.trim().isEmpty)
+        ? 'Hipertrofia'
+        : goal;
+    final days = (daysPerWeek == null || daysPerWeek < 1)
+        ? 3
+        : daysPerWeek.clamp(1, 6);
+    final preferred = _workoutForDays(days, normalizedGoal);
+    final alternatives = <WorkoutModel>[
+      _workoutForDays(3, normalizedGoal),
+      _workoutForDays(4, normalizedGoal),
+      _workoutForDays(5, normalizedGoal),
+    ].where((workout) => workout.id != preferred.id).toList();
+
+    return [preferred, ...alternatives.take(2)];
+  }
+
+  static WorkoutModel _workoutForDays(int days, String goal) {
+    final isFatLoss = goal == 'Emagrecimento' || goal == 'Condicionamento';
+    final suffix = isFatLoss ? ' + Cardio' : '';
+    final level = days >= 5
+        ? 'AvanÃ§ado'
+        : days >= 3
+        ? 'IntermediÃ¡rio'
+        : 'Iniciante';
+    final duration = isFatLoss ? 55 : 50;
+
+    switch (days) {
+      case 1:
+        return _templateWorkout(
+          id: 'full-body-$goal',
+          title: 'Full Body$suffix',
+          durationMinutes: isFatLoss ? 45 : 40,
+          level: 'Iniciante',
+          groups: ['Peito', 'Costas', 'Pernas', 'Ombro', 'AbdÃ´men'],
+        );
+      case 2:
+        return _templateWorkout(
+          id: 'ab-$goal',
+          title: 'Treino AB$suffix',
+          durationMinutes: duration,
+          level: 'Iniciante',
+          groups: ['Superiores', 'Inferiores', 'AbdÃ´men'],
+        );
+      case 3:
+        return _templateWorkout(
+          id: 'abc-$goal',
+          title: 'Treino ABC$suffix',
+          durationMinutes: duration,
+          level: level,
+          groups: ['Peito e TrÃ­ceps', 'Costas e BÃ­ceps', 'Pernas e Ombro'],
+        );
+      case 4:
+        return _templateWorkout(
+          id: 'abcd-$goal',
+          title: 'Treino ABCD$suffix',
+          durationMinutes: isFatLoss ? 60 : 55,
+          level: level,
+          groups: ['Peito', 'Costas', 'Pernas', 'Ombro e BraÃ§os'],
+        );
+      case 5:
+        return _templateWorkout(
+          id: 'abcde-$goal',
+          title: 'Treino ABCDE$suffix',
+          durationMinutes: isFatLoss ? 60 : 55,
+          level: level,
+          groups: ['Peito', 'Costas', 'Pernas', 'Ombro', 'BraÃ§os'],
+        );
+      default:
+        return _templateWorkout(
+          id: 'ppl-$goal',
+          title: 'Push Pull Legs$suffix',
+          durationMinutes: isFatLoss ? 65 : 60,
+          level: 'AvanÃ§ado',
+          groups: ['Push', 'Pull', 'Legs', 'Push', 'Pull', 'Legs'],
+        );
+    }
+  }
+
+  static WorkoutModel _templateWorkout({
+    required String id,
+    required String title,
+    required int durationMinutes,
+    required String level,
+    required List<String> groups,
+  }) {
+    return WorkoutModel(
+      id: id,
+      title: title,
+      durationMinutes: durationMinutes,
+      level: level,
+      exercises: groups
+          .take(6)
+          .map(
+            (group) => ExerciseModel(
+              id: group.toLowerCase().replaceAll(' ', '-'),
+              name: _mainExerciseForGroup(group),
+              sets: 4,
+              reps: '12 reps',
+              rest: '3:00 min',
+              muscleGroup: group,
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  static String _mainExerciseForGroup(String group) {
+    if (group.contains('Peito') || group == 'Push') {
+      return 'Supino reto';
+    }
+    if (group.contains('Costas') || group == 'Pull') {
+      return 'Puxada alta';
+    }
+    if (group.contains('Pernas') || group == 'Inferiores' || group == 'Legs') {
+      return 'Agachamento';
+    }
+    if (group.contains('Ombro')) {
+      return 'Desenvolvimento';
+    }
+    if (group.contains('Braços') || group.contains('Bíceps')) {
+      return 'Rosca direta';
+    }
+    if (group.contains('Abdômen')) {
+      return 'Abdominal';
+    }
+    return 'Circuito funcional';
+  }
+
   static const exercises = [
     ExerciseModel(
       id: 'supino-reto',
@@ -36,7 +168,7 @@ class MockData {
       sets: 4,
       reps: '10 reps',
       rest: '1:00 min',
-      muscleGroup: 'Bíceps',
+      muscleGroup: 'BÃ­ceps',
     ),
     ExerciseModel(
       id: 'rosca-martelo',
@@ -44,7 +176,7 @@ class MockData {
       sets: 3,
       reps: '12 reps',
       rest: '1:00 min',
-      muscleGroup: 'Bíceps',
+      muscleGroup: 'BÃ­ceps',
     ),
     ExerciseModel(
       id: 'abdominal',
@@ -52,7 +184,7 @@ class MockData {
       sets: 3,
       reps: '15 reps',
       rest: '0:45 min',
-      muscleGroup: 'Abdômen',
+      muscleGroup: 'AbdÃ´men',
     ),
     ExerciseModel(
       id: 'agachamento',
@@ -83,9 +215,9 @@ class MockData {
   static const workouts = [
     WorkoutModel(
       id: 'peito-biceps',
-      title: 'Peito e Bíceps',
+      title: 'Peito e BÃ­ceps',
       durationMinutes: 45,
-      level: 'Intermediário',
+      level: 'IntermediÃ¡rio',
       exercises: [
         ExerciseModel(
           id: 'supino-reto',
@@ -117,7 +249,7 @@ class MockData {
           sets: 4,
           reps: '10 reps',
           rest: '1:00 min',
-          muscleGroup: 'Bíceps',
+          muscleGroup: 'BÃ­ceps',
         ),
         ExerciseModel(
           id: 'rosca-martelo',
@@ -125,7 +257,7 @@ class MockData {
           sets: 3,
           reps: '12 reps',
           rest: '1:00 min',
-          muscleGroup: 'Bíceps',
+          muscleGroup: 'BÃ­ceps',
         ),
         ExerciseModel(
           id: 'abdominal',
@@ -133,15 +265,15 @@ class MockData {
           sets: 3,
           reps: '15 reps',
           rest: '0:45 min',
-          muscleGroup: 'Abdômen',
+          muscleGroup: 'AbdÃ´men',
         ),
       ],
     ),
     WorkoutModel(
       id: 'costas-triceps',
-      title: 'Costas e Tríceps',
+      title: 'Costas e TrÃ­ceps',
       durationMinutes: 50,
-      level: 'Intermediário',
+      level: 'IntermediÃ¡rio',
       exercises: [
         ExerciseModel(
           id: 'puxada',
@@ -161,11 +293,11 @@ class MockData {
         ),
         ExerciseModel(
           id: 'triceps-corda',
-          name: 'Tríceps corda',
+          name: 'TrÃ­ceps corda',
           sets: 3,
           reps: '12 reps',
           rest: '1:00 min',
-          muscleGroup: 'Tríceps',
+          muscleGroup: 'TrÃ­ceps',
         ),
       ],
     ),
@@ -173,7 +305,7 @@ class MockData {
       id: 'pernas',
       title: 'Pernas completo',
       durationMinutes: 60,
-      level: 'Avançado',
+      level: 'AvanÃ§ado',
       exercises: [
         ExerciseModel(
           id: 'agachamento',
@@ -203,7 +335,7 @@ class MockData {
     ),
     WorkoutModel(
       id: 'ombro-abdomen',
-      title: 'Ombro e Abdômen',
+      title: 'Ombro e AbdÃ´men',
       durationMinutes: 40,
       level: 'Iniciante',
       exercises: [
@@ -217,7 +349,7 @@ class MockData {
         ),
         ExerciseModel(
           id: 'elevacao-lateral',
-          name: 'Elevação lateral',
+          name: 'ElevaÃ§Ã£o lateral',
           sets: 3,
           reps: '12 reps',
           rest: '1:00 min',
@@ -229,13 +361,13 @@ class MockData {
           sets: 3,
           reps: '15 reps',
           rest: '0:45 min',
-          muscleGroup: 'Abdômen',
+          muscleGroup: 'AbdÃ´men',
         ),
       ],
     ),
     WorkoutModel(
       id: 'cardio',
-      title: 'Cardio rápido',
+      title: 'Cardio rÃ¡pido',
       durationMinutes: 25,
       level: 'Iniciante',
       exercises: [
@@ -273,7 +405,7 @@ class MockData {
       title: 'Como evoluir no supino?',
       author: 'Glynto Silva',
       content:
-          'Estou travado na carga do supino há algumas semanas. A melhor saída costuma ser ajustar volume, execução e progressão semanal, sem sacrificar amplitude.',
+          'Estou travado na carga do supino hÃ¡ algumas semanas. A melhor saÃ­da costuma ser ajustar volume, execuÃ§Ã£o e progressÃ£o semanal, sem sacrificar amplitude.',
       likes: 45,
       commentsCount: 12,
     ),
@@ -282,16 +414,16 @@ class MockData {
       title: 'Treino de pernas para iniciantes',
       author: 'Renata Costa',
       content:
-          'Para começar bem, priorize agachamento guiado, leg press e exercícios unilaterais simples. Técnica vem antes de carga.',
+          'Para comeÃ§ar bem, priorize agachamento guiado, leg press e exercÃ­cios unilaterais simples. TÃ©cnica vem antes de carga.',
       likes: 32,
       commentsCount: 8,
     ),
     CommunityPostModel(
       id: 'proteina',
-      title: 'Dicas para bater proteína',
+      title: 'Dicas para bater proteÃ­na',
       author: 'Comunidade',
       content:
-          'Distribuir proteína ao longo do dia ajuda muito. Ovos, iogurte, frango, peixe e whey podem entrar conforme sua rotina.',
+          'Distribuir proteÃ­na ao longo do dia ajuda muito. Ovos, iogurte, frango, peixe e whey podem entrar conforme sua rotina.',
       likes: 60,
       commentsCount: 15,
     ),
@@ -300,19 +432,19 @@ class MockData {
   static const meals = [
     MealModel(
       id: 'cafe',
-      name: 'Café da manhã',
-      type: 'Café da manhã',
+      name: 'CafÃ© da manhÃ£',
+      type: 'CafÃ© da manhÃ£',
       calories: 430,
       completed: true,
-      foods: ['Ovos mexidos', 'Pão integral', 'Café sem açúcar', 'Banana'],
+      foods: ['Ovos mexidos', 'PÃ£o integral', 'CafÃ© sem aÃ§Ãºcar', 'Banana'],
     ),
     MealModel(
       id: 'almoco',
-      name: 'Almoço',
-      type: 'Almoço',
+      name: 'AlmoÃ§o',
+      type: 'AlmoÃ§o',
       calories: 720,
       completed: false,
-      foods: ['Arroz integral', 'Feijão', 'Frango grelhado', 'Salada'],
+      foods: ['Arroz integral', 'FeijÃ£o', 'Frango grelhado', 'Salada'],
     ),
     MealModel(
       id: 'jantar',
@@ -320,7 +452,7 @@ class MockData {
       type: 'Jantar',
       calories: 610,
       completed: false,
-      foods: ['Tilápia', 'Batata doce', 'Legumes assados'],
+      foods: ['TilÃ¡pia', 'Batata doce', 'Legumes assados'],
     ),
     MealModel(
       id: 'lanches',
@@ -328,7 +460,7 @@ class MockData {
       type: 'Lanche',
       calories: 320,
       completed: false,
-      foods: ['Iogurte natural', 'Granola', 'Maçã'],
+      foods: ['Iogurte natural', 'Granola', 'MaÃ§Ã£'],
     ),
   ];
 
@@ -339,7 +471,7 @@ class MockData {
       role: 'Personal Trainer',
       followers: '6.532',
       bio:
-          'Especialista em hipertrofia e recomposição corporal. Treinos práticos, progressivos e feitos para caber na rotina.',
+          'Especialista em hipertrofia e recomposiÃ§Ã£o corporal. Treinos prÃ¡ticos, progressivos e feitos para caber na rotina.',
       rating: 4.9,
     ),
     ProfessionalModel(
@@ -348,7 +480,7 @@ class MockData {
       role: 'Nutricionista',
       followers: '4.210',
       bio:
-          'Nutrição esportiva com foco em adesão, performance e ganho de massa magra sem complicar sua alimentação.',
+          'NutriÃ§Ã£o esportiva com foco em adesÃ£o, performance e ganho de massa magra sem complicar sua alimentaÃ§Ã£o.',
       rating: 4.8,
     ),
   ];

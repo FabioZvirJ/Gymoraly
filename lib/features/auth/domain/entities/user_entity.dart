@@ -7,6 +7,8 @@ class UserEntity {
   final String? gender;
   final double? height;
   final double? weight;
+  final int? trainingDaysPerWeek;
+  final String? trainingGoal;
 
   const UserEntity({
     this.id,
@@ -17,5 +19,7 @@ class UserEntity {
     this.gender,
     this.height,
     this.weight,
+    this.trainingDaysPerWeek,
+    this.trainingGoal,
   });
 }
