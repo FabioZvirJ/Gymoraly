@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymoraly/features/onboarding/pages/fitness_onboarding_intro_page.dart';
 import '../controllers/auth_controller.dart';
 
 class PhysicalDataPage extends StatefulWidget {
@@ -153,8 +154,9 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const _RegistrationSuccessPage(),
+                                    builder: (context) => FitnessOnboardingIntroPage(
+                                      userName: widget.controller.model.name,
+                                    ),
                                   ),
                                 );
                               } else if (context.mounted) {
@@ -203,27 +205,3 @@ class _PhysicalDataPageState extends State<PhysicalDataPage> {
   }
 }
 
-class _RegistrationSuccessPage extends StatelessWidget {
-  const _RegistrationSuccessPage();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sucesso')),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Conta criada com sucesso!'),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () =>
-                  Navigator.popUntil(context, (route) => route.isFirst),
-              child: const Text('Ir para login'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

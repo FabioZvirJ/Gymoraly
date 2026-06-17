@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gymoraly/features/onboarding/pages/fitness_onboarding_intro_page.dart';
+import 'package:gymoraly/features/onboarding/services/current_training_plan_store.dart';
 import 'package:gymoraly/views/main_wrapper.dart';
 // Verifique se os caminhos abaixo batem com as suas pastas
 import '../models/login_model.dart';
@@ -42,11 +44,17 @@ class LoginController extends ChangeNotifier {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MainWrapper(
-              userName: user.name,
-              trainingGoal: user.trainingGoal,
-              trainingDaysPerWeek: user.trainingDaysPerWeek,
-            ), // CHAME O WRAPPER AQUI
+            builder: (context) {
+              final currentPlan = CurrentTrainingPlanStore.instance.currentPlan;
+              if (currentPlan == null) {
+                return FitnessOnboardingIntroPage(userName: user.name);
+              }
+              return MainWrapper(
+                userName: user.name,
+                trainingGoal: user.trainingGoal,
+                trainingDaysPerWeek: user.trainingDaysPerWeek,
+              );
+            }, // CHAME O WRAPPER AQUI
           ),
         );
       } else {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gymoraly/features/onboarding/pages/fitness_onboarding_intro_page.dart';
+import 'package:gymoraly/features/onboarding/services/current_training_plan_store.dart';
 import '../providers/auth_provider.dart';
 import 'register_page.dart';
 import 'main_wrapper_page.dart';
@@ -134,12 +136,17 @@ class LoginPage extends ConsumerWidget {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MainWrapperPage(
-                                    userName: user.name,
-                                    trainingGoal: user.trainingGoal,
-                                    trainingDaysPerWeek:
-                                        user.trainingDaysPerWeek,
-                                  ),
+                                  builder: (context) {
+                                    final currentPlan = CurrentTrainingPlanStore.instance.currentPlan;
+                                    if (currentPlan == null) {
+                                      return FitnessOnboardingIntroPage(userName: user.name);
+                                    }
+                                    return MainWrapperPage(
+                                      userName: user.name,
+                                      trainingGoal: user.trainingGoal,
+                                      trainingDaysPerWeek: user.trainingDaysPerWeek,
+                                    );
+                                  },
                                 ),
                               );
                             } else {
