@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gymoraly/features/onboarding/models/exercise_model.dart' as generated;
+import 'package:gymoraly/features/onboarding/models/training_session_model.dart';
 import 'package:gymoraly/features/workouts/pages/workout_summary_page.dart';
 import 'package:gymoraly/shared/mock/mock_data.dart';
 import 'package:gymoraly/shared/models/workout_model.dart';
@@ -7,23 +9,27 @@ import 'package:gymoraly/shared/widgets/app_header.dart';
 import 'package:gymoraly/shared/widgets/app_primary_button.dart';
 
 class WorkoutSessionPage extends StatelessWidget {
-  WorkoutSessionPage({super.key, WorkoutModel? workout})
+  WorkoutSessionPage({super.key, WorkoutModel? workout, this.session})
     : workout = workout ?? MockData.workouts[0];
 
   final WorkoutModel workout;
+  final TrainingSessionModel? session;
 
   @override
   Widget build(BuildContext context) {
     const primaryColor = AppHeader.primaryColor;
+    final exercises = _sessionExercises;
+    final current = exercises.first;
+    final title = session?.title ?? workout.title;
+    final subtitle = session?.subtitle ?? '${workout.durationMinutes} min de treino';
+    final progressText = 'Exercício 1 de ${exercises.length}';
+    final progress = exercises.isEmpty ? 0.0 : 1 / exercises.length;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F8),
       body: Column(
         children: [
-          AppHeader(
-            title: workout.title,
-            subtitle: '${workout.durationMinutes} min de treino',
-          ),
+          AppHeader(title: title, subtitle: subtitle),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(20, 22, 20, 28),
@@ -34,32 +40,21 @@ class WorkoutSessionPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Exercício 2 de 6',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              '33%',
-                              style: TextStyle(
-                                color: primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            Text(progressText, style: const TextStyle(fontWeight: FontWeight.bold)),
+                            Text('${(progress * 100).round()}%', style: const TextStyle(color: primaryColor, fontWeight: FontWeight.bold)),
                           ],
                         ),
                         const SizedBox(height: 12),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: LinearProgressIndicator(
-                            value: 0.33,
+                            value: progress,
                             minHeight: 10,
                             backgroundColor: Colors.blue.shade50,
-                            valueColor: const AlwaysStoppedAnimation(
-                              primaryColor,
-                            ),
+                            valueColor: const AlwaysStoppedAnimation(primaryColor),
                           ),
                         ),
                       ],
@@ -77,32 +72,22 @@ class WorkoutSessionPage extends StatelessWidget {
                             color: primaryColor.withValues(alpha: 0.10),
                             borderRadius: BorderRadius.circular(24),
                           ),
-                          child: const Icon(
-                            Icons.fitness_center,
-                            color: primaryColor,
-                            size: 34,
-                          ),
+                          child: const Icon(Icons.fitness_center, color: primaryColor, size: 34),
                         ),
                         const SizedBox(width: 18),
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Supino reto',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 10),
+                              Text(current.name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 10),
                               Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
                                 children: [
-                                  _InfoPill('4 séries'),
-                                  _InfoPill('10-12 reps'),
-                                  _InfoPill('1:30 min'),
+                                  _InfoPill('${current.sets} séries'),
+                                  _InfoPill('${current.reps} reps'),
+                                  _InfoPill(_rest(current.restSeconds)),
                                 ],
                               ),
                             ],
@@ -112,24 +97,23 @@ class WorkoutSessionPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 22),
-                  const Text(
-                    'Séries',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                  const Text('Séries', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
-                  const _SetRow(index: 1, text: '40 kg x 12 reps', done: true),
-                  const _SetRow(index: 2, text: '45 kg x 10 reps', done: true),
-                  const _SetRow(index: 3, text: 'Pendente', done: false),
-                  const _SetRow(index: 4, text: 'Pendente', done: false),
+                  ...List.generate(
+                    current.sets,
+                    (index) => _SetRow(
+                      index: index + 1,
+                      text: index < 2 ? '${current.reps} reps' : 'Pendente',
+                      done: index < 2,
+                    ),
+                  ),
                   const SizedBox(height: 22),
                   AppPrimaryButton(
                     label: 'Marcar série como concluída',
                     icon: Icons.check,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Série marcada como concluída'),
-                        ),
+                        const SnackBar(content: Text('Série marcada como concluída')),
                       );
                     },
                   ),
@@ -137,9 +121,7 @@ class WorkoutSessionPage extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Próximo exercício carregado'),
-                        ),
+                        const SnackBar(content: Text('Próximo exercício carregado')),
                       );
                     },
                     icon: const Icon(Icons.skip_next),
@@ -148,9 +130,7 @@ class WorkoutSessionPage extends StatelessWidget {
                       minimumSize: const Size.fromHeight(52),
                       foregroundColor: primaryColor,
                       side: const BorderSide(color: primaryColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -159,7 +139,7 @@ class WorkoutSessionPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => WorkoutSummaryPage(workout: workout),
+                          builder: (_) => WorkoutSummaryPage(workout: workout, session: session),
                         ),
                       );
                     },
@@ -177,6 +157,27 @@ class WorkoutSessionPage extends StatelessWidget {
       ),
     );
   }
+
+  List<generated.ExerciseModel> get _sessionExercises {
+    if (session != null && session!.exercises.isNotEmpty) return session!.exercises;
+    return workout.exercises.map((exercise) {
+      return generated.ExerciseModel(
+        id: exercise.id,
+        name: exercise.name,
+        sets: exercise.sets,
+        reps: exercise.reps.replaceAll(' reps', ''),
+        restSeconds: 90,
+        notes: 'Mantenha execução controlada.',
+        muscleGroup: exercise.muscleGroup,
+      );
+    }).toList();
+  }
+
+  String _rest(int seconds) {
+    final minutes = seconds ~/ 60;
+    final rest = seconds % 60;
+    return '${minutes}:${rest.toString().padLeft(2, '0')} min';
+  }
 }
 
 class _InfoPill extends StatelessWidget {
@@ -188,17 +189,10 @@ class _InfoPill extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF1F3F6),
-        borderRadius: BorderRadius.circular(20),
-      ),
+      decoration: BoxDecoration(color: const Color(0xFFF1F3F6), borderRadius: BorderRadius.circular(20)),
       child: Text(
         text,
-        style: TextStyle(
-          color: Colors.grey.shade700,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyle(color: Colors.grey.shade700, fontSize: 12, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -218,26 +212,15 @@ class _SetRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
-          Icon(
-            done ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: done ? Colors.green : Colors.grey.shade400,
-          ),
+          Icon(done ? Icons.check_circle : Icons.radio_button_unchecked, color: done ? Colors.green : Colors.grey.shade400),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               'Série $index',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: done ? Colors.black87 : Colors.grey.shade600,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, color: done ? Colors.black87 : Colors.grey.shade600),
             ),
           ),
-          Text(
-            text,
-            style: TextStyle(
-              color: done ? Colors.black87 : Colors.grey.shade500,
-            ),
-          ),
+          Text(text, style: TextStyle(color: done ? Colors.black87 : Colors.grey.shade500)),
         ],
       ),
     );
