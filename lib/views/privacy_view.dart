@@ -30,7 +30,10 @@ class _PrivacyViewState extends State<PrivacyView> {
                 children: [
                   const Text(
                     "Sua segurança é nossa prioridade",
-                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   const SizedBox(height: 30),
 
@@ -42,7 +45,7 @@ class _PrivacyViewState extends State<PrivacyView> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.03),
+                          color: Colors.black.withValues(alpha: 0.03),
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -54,7 +57,9 @@ class _PrivacyViewState extends State<PrivacyView> {
                         "Perfil Público",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: const Text("Permitir que outros vejam seus treinos"),
+                      subtitle: const Text(
+                        "Permitir que outros vejam seus treinos",
+                      ),
                       value: isPublic,
                       onChanged: (value) {
                         setState(() {
@@ -74,19 +79,28 @@ class _PrivacyViewState extends State<PrivacyView> {
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                         elevation: 0,
                       ),
                       child: const Text(
                         "Salvar preferências",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text("Cancelar", style: TextStyle(color: Colors.grey)),
-                  )
+                    child: const Text(
+                      "Cancelar",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -118,7 +132,11 @@ class _PrivacyViewState extends State<PrivacyView> {
                 ),
                 Text(
                   title,
-                  style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -128,7 +146,10 @@ class _PrivacyViewState extends State<PrivacyView> {
           top: 110,
           child: Container(
             padding: const EdgeInsets.all(15),
-            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
             child: Icon(icon, size: 50, color: const Color(0xFF2196F3)),
           ),
         ),

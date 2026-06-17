@@ -55,7 +55,9 @@ class _LanguageViewState extends State<LanguageView> {
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   color: primaryColor,
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
                 ),
                 child: SafeArea(
                   child: Row(
@@ -67,9 +69,9 @@ class _LanguageViewState extends State<LanguageView> {
                       const Text(
                         'Idioma',
                         style: TextStyle(
-                          color: Colors.white, 
-                          fontSize: 24, 
-                          fontWeight: FontWeight.bold
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -83,9 +85,15 @@ class _LanguageViewState extends State<LanguageView> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
-                    boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
+                    boxShadow: [
+                      BoxShadow(blurRadius: 10, color: Colors.black12),
+                    ],
                   ),
-                  child: const Icon(Icons.language_rounded, size: 50, color: primaryColor),
+                  child: const Icon(
+                    Icons.language_rounded,
+                    size: 50,
+                    color: primaryColor,
+                  ),
                 ),
               ),
             ],
@@ -96,12 +104,12 @@ class _LanguageViewState extends State<LanguageView> {
           // --- LISTA DE IDIOMAS COM SCROLLBAR E FLAGS ---
           Expanded(
             child: Scrollbar(
-              controller: _scrollController, 
-              thumbVisibility: true,         
+              controller: _scrollController,
+              thumbVisibility: true,
               thickness: 6,
               radius: const Radius.circular(10),
               child: ListView.builder(
-                controller: _scrollController, 
+                controller: _scrollController,
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 itemCount: languages.length,
                 itemBuilder: (context, index) {
@@ -116,9 +124,14 @@ class _LanguageViewState extends State<LanguageView> {
                     },
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 15),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
                       decoration: BoxDecoration(
-                        color: isSelected ? primaryColor.withOpacity(0.05) : Colors.white,
+                        color: isSelected
+                            ? primaryColor.withValues(alpha: 0.05)
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: isSelected ? primaryColor : Colors.transparent,
@@ -126,7 +139,7 @@ class _LanguageViewState extends State<LanguageView> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
+                            color: Colors.black.withValues(alpha: 0.03),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),
@@ -140,27 +153,36 @@ class _LanguageViewState extends State<LanguageView> {
                               lang['name']!,
                               style: TextStyle(
                                 fontSize: 16,
-                                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                                color: isSelected ? primaryColor : Colors.black87,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.w500,
+                                color: isSelected
+                                    ? primaryColor
+                                    : Colors.black87,
                               ),
                             ),
                           ),
-                          
+
                           // Bandeira usando o pacote 'flag'
                           Flag.fromString(
                             lang['code']!,
                             height: 24,
                             width: 32,
-                            borderRadius: 4, // Dá uma borda levemente arredondada na bandeira
+                            borderRadius:
+                                4, // Dá uma borda levemente arredondada na bandeira
                             fit: BoxFit.cover,
                           ),
-                          
+
                           const SizedBox(width: 15),
-                          
+
                           // Ícone de Seleção (Check)
                           Icon(
-                            isSelected ? Icons.check_circle : Icons.circle_outlined,
-                            color: isSelected ? primaryColor : Colors.grey.shade300,
+                            isSelected
+                                ? Icons.check_circle
+                                : Icons.circle_outlined,
+                            color: isSelected
+                                ? primaryColor
+                                : Colors.grey.shade300,
                             size: 20,
                           ),
                         ],
@@ -186,7 +208,9 @@ class _LanguageViewState extends State<LanguageView> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   elevation: 0,
                 ),
                 child: const Text(

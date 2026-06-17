@@ -59,37 +59,37 @@ class WorkoutSplitsView extends StatelessWidget {
   }
 
   // Dicionário de explicações
-String _obterExplicacaoTreino(String title) {
+  String _obterExplicacaoTreino(String title) {
     switch (title) {
-      case 'Full Body': 
+      case 'Full Body':
         return 'Sessão de treinamento global que recruta todos os grandes grupos musculares. Ideal para maximizar o gasto calórico e estímulos neuromusculares.';
-      case 'AB': 
+      case 'AB':
         return 'Bifurcação do treinamento, comumente separada em membros superiores e inferiores, permitindo maior volume direcionado e recuperação sistêmica.';
-      case 'ABC': 
+      case 'ABC':
         return 'Divisão sinérgica tradicional. Agrupa músculos agonistas e auxiliares (ex: Peito e Tríceps) para otimizar o tempo de tensão e o descanso isolado.';
-      case 'ABCD': 
+      case 'ABCD':
         return 'Segmentação avançada que isola grupos musculares específicos, proporcionando alto volume de treinamento por sessão e hipertrofia focada.';
-      case 'ABCDE': 
+      case 'ABCDE':
         return 'Isolamento muscular extremo. Voltado para atletas que necessitam de sobrecarga máxima e exaustão completa em um único grupamento.';
-      case 'Push / Pull / Legs (PPL)': 
+      case 'Push / Pull / Legs (PPL)':
         return 'Agrupamento baseado em biomecânica de movimento (Puxar, Empurrar e Pernas). Altamente eficiente para progressão de carga e prevenção de fadiga.';
-      case 'Upper / Lower': 
+      case 'Upper / Lower':
         return 'Separação anatômica estrita entre tronco/membros superiores e membros inferiores. Promove excelente equilíbrio de desenvolvimento estrutural.';
-      case 'Push / Pull': 
+      case 'Push / Pull':
         return 'Estruturação focada puramente na cinesiologia dos movimentos, alternando o recrutamento de cadeias musculares anteriores e posteriores.';
-      case 'Full Body + Upper/Lower': 
+      case 'Full Body + Upper/Lower':
         return 'Abordagem híbrida que combina os benefícios metabólicos de ativação global com a especificidade do treinamento segmentado.';
-      case 'PPL + Upper/Lower': 
+      case 'PPL + Upper/Lower':
         return 'Periodização complexa que une estímulos focados em máxima hipertrofia (PPL) com sessões orientadas ao ganho de força bruta (Upper/Lower).';
-      case 'Arnold Split': 
+      case 'Arnold Split':
         return 'Trabalho de musculatura antagonista (Peito e Costas) e isolada (Ombros e Braços). Exige alto condicionamento e promove vascularização.';
-      case 'Bro Split': 
+      case 'Bro Split':
         return 'Foco unifocal de alto volume. Dedica uma sessão inteira à quebra de fibras e exaustão total de um único grupamento muscular.';
-      case 'Torso / Legs': 
+      case 'Torso / Legs':
         return 'Agrupa os grandes músculos do tronco em uma sessão e foca nas extremidades inferiores na seguinte, otimizando o fluxo sanguíneo central.';
-      case 'Push / Pull / Legs / Upper / Lower': 
+      case 'Push / Pull / Legs / Upper / Lower':
         return 'Sistema híbrido de altíssimo rendimento que mescla divisões biomecânicas com segmentação anatômica para periodização avançada.';
-      default: 
+      default:
         return 'Selecione esta estrutura base para configurar e personalizar seus blocos de exercícios.';
     }
   }
@@ -104,45 +104,55 @@ String _obterExplicacaoTreino(String title) {
       message: _obterExplicacaoTreino(title),
       waitDuration: const Duration(seconds: 2),
       decoration: BoxDecoration(
-        color: Colors.white, 
+        color: Colors.white,
         borderRadius: BorderRadius.circular(2), // Quadrado
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08), 
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 15,
             offset: const Offset(0, 8),
-          )
+          ),
         ],
-        border: Border.all(color: primaryColor.withOpacity(0.3), width: 1.5), 
+        border: Border.all(
+          color: primaryColor.withValues(alpha: 0.3),
+          width: 1.5,
+        ),
       ),
       textStyle: TextStyle(
-        color: Colors.grey.shade800, 
-        fontSize: 14, 
+        color: Colors.grey.shade800,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
         height: 1.3,
       ),
-      
+
       // 👇 HEIGHT GORDO: Deixei 15 em cima e embaixo para ficar recheado
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      
+
       // 👇 O SEGREDO DO ALINHAMENTO:
       // left: 20 -> Faz a borda azul alinhar perfeitamente com a borda do card
       // right: 80 -> Corta a caixa antes dela chegar no final direito
-      margin: const EdgeInsets.only(left: 20, right: 80), 
-      
+      margin: const EdgeInsets.only(left: 20, right: 80),
+
       preferBelow: true,
       verticalOffset: 25, // Joga o balão pra baixo do card
-      
+
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(2), 
+          borderRadius: BorderRadius.circular(2),
           border: Border.all(color: Colors.grey.shade200),
         ),
         child: ListTile(
-          title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+          title: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          trailing: const Icon(
+            Icons.arrow_forward_ios,
+            size: 16,
+            color: Colors.grey,
+          ),
           onTap: () async {
             final exercicioEscolhido = await Navigator.push(
               context,

@@ -13,14 +13,17 @@ class SubscriptionsView extends StatelessWidget {
         children: [
           _buildHeader(context, "Assinaturas", Icons.stars_rounded),
           const SizedBox(height: 80),
-          
+
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               children: [
                 _buildPlanCard(primaryColor, "Plano Premium", "Ativo", true),
                 const SizedBox(height: 20),
-                const Text("Vantagens inclusas:", style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  "Vantagens inclusas:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 10),
                 _benefitRow("Acesso ilimitado a treinos"),
                 _benefitRow("Gráficos de progresso"),
@@ -48,13 +51,33 @@ class SubscriptionsView extends StatelessWidget {
           child: SafeArea(
             child: Row(
               children: [
-                IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white), onPressed: () => Navigator.pop(context)),
-                Text(title, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
         ),
-        Positioned(top: 110, child: Container(padding: const EdgeInsets.all(15), decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle), child: Icon(icon, size: 50, color: const Color(0xFF2196F3)))),
+        Positioned(
+          top: 110,
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 50, color: const Color(0xFF2196F3)),
+          ),
+        ),
       ],
     );
   }
@@ -65,15 +88,27 @@ class SubscriptionsView extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3), width: 2),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 2),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            Text(status, style: TextStyle(color: color, fontWeight: FontWeight.w600)),
-          ]),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              Text(
+                status,
+                style: TextStyle(color: color, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
           const Icon(Icons.check_circle, color: Colors.green),
         ],
       ),
@@ -83,7 +118,13 @@ class SubscriptionsView extends StatelessWidget {
   Widget _benefitRow(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(children: [const Icon(Icons.check, size: 18, color: Colors.blue), const SizedBox(width: 10), Text(text)]),
+      child: Row(
+        children: [
+          const Icon(Icons.check, size: 18, color: Colors.blue),
+          const SizedBox(width: 10),
+          Text(text),
+        ],
+      ),
     );
   }
 }

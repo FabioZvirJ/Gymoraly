@@ -27,7 +27,7 @@ class ProfileView extends StatelessWidget {
               alignment: Alignment.center,
               clipBehavior: Clip.none,
               children: [
-               Container(
+                Container(
                   height: 160,
                   width: double.infinity,
                   decoration: const BoxDecoration(
@@ -37,19 +37,23 @@ class ProfileView extends StatelessWidget {
                     ),
                   ),
                   // Voltamos com o padding para empurrar a seta e o texto para baixo!
-                  padding: const EdgeInsets.only(top: 55, left: 10), 
+                  padding: const EdgeInsets.only(top: 55, left: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
                       const Padding(
                         // Esse padding top de 6 alinha o texto perfeitamente com o meio da seta
-                        padding: EdgeInsets.only(top: 6, left: 5), 
+                        padding: EdgeInsets.only(top: 6, left: 5),
                         child: Text(
                           'Perfil',
                           style: TextStyle(
@@ -151,17 +155,28 @@ class ProfileView extends StatelessWidget {
             _buildProfileOption(
               Icons.lock_outline,
               'Privacidade',
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyView())),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PrivacyView()),
+              ),
             ),
             _buildProfileOption(
               Icons.credit_card_rounded,
               'Assinaturas',
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SubscriptionsView())),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SubscriptionsView(),
+                ),
+              ),
             ),
             _buildProfileOption(
               Icons.settings_outlined,
               'Configurações',
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsView())),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsView()),
+              ),
             ),
 
             // Botão Sair
@@ -227,7 +242,7 @@ class ProfileView extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),

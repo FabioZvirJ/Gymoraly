@@ -4,7 +4,8 @@ class NotificationsSettingsView extends StatefulWidget {
   const NotificationsSettingsView({super.key});
 
   @override
-  State<NotificationsSettingsView> createState() => _NotificationsSettingsViewState();
+  State<NotificationsSettingsView> createState() =>
+      _NotificationsSettingsViewState();
 }
 
 class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
@@ -19,15 +20,27 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
       backgroundColor: const Color(0xFFF8F9FA),
       body: Column(
         children: [
-          _buildHeader(context, "Notificações", Icons.notifications_active_rounded),
+          _buildHeader(
+            context,
+            "Notificações",
+            Icons.notifications_active_rounded,
+          ),
           const SizedBox(height: 80),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
-                _buildSwitchCard("Notificações Push", pushEnabled, (val) => setState(() => pushEnabled = val)),
+                _buildSwitchCard(
+                  "Notificações Push",
+                  pushEnabled,
+                  (val) => setState(() => pushEnabled = val),
+                ),
                 const SizedBox(height: 15),
-                _buildSwitchCard("Lembretes de Treino", workoutReminders, (val) => setState(() => workoutReminders = val)),
+                _buildSwitchCard(
+                  "Lembretes de Treino",
+                  workoutReminders,
+                  (val) => setState(() => workoutReminders = val),
+                ),
               ],
             ),
           ),
@@ -41,7 +54,12 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+          ),
+        ],
       ),
       child: SwitchListTile(
         activeColor: const Color(0xFF2196F3),
@@ -60,10 +78,41 @@ class _NotificationsSettingsViewState extends State<NotificationsSettingsView> {
         Container(
           height: 160,
           width: double.infinity,
-          decoration: const BoxDecoration(color: Color(0xFF2196F3), borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
-          child: SafeArea(child: Row(children: [IconButton(icon: const Icon(Icons.arrow_back, color: Colors.white), onPressed: () => Navigator.pop(context)), Text(title, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold))])),
+          decoration: const BoxDecoration(
+            color: Color(0xFF2196F3),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+          ),
+          child: SafeArea(
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        Positioned(top: 110, child: Container(padding: const EdgeInsets.all(15), decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)]), child: Icon(icon, size: 50, color: const Color(0xFF2196F3)))),
+        Positioned(
+          top: 110,
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
+            ),
+            child: Icon(icon, size: 50, color: const Color(0xFF2196F3)),
+          ),
+        ),
       ],
     );
   }
